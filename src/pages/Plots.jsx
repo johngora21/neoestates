@@ -579,14 +579,6 @@ const Plots = () => {
               {/* Contact Buttons */}
               <div className="contact-buttons">
                 <a
-                  href={`tel:+255123456789`}
-                  className="btn btn-primary"
-                  onClick={(e) => e.stopPropagation()} // Prevent card click when clicking call button
-                >
-                  <Phone size={16} />
-                  Call Now
-                </a>
-                <a
                   href={`https://wa.me/255123456789?text=Hi, I'm interested in ${plot.title}`}
                   target="_blank"
                   rel="noopener noreferrer"
@@ -595,6 +587,14 @@ const Plots = () => {
                 >
                   <MessageSquare size={16} />
                   WhatsApp
+                </a>
+                <a
+                  href={`tel:+255123456789`}
+                  className="btn btn-primary"
+                  onClick={(e) => e.stopPropagation()} // Prevent card click when clicking call button
+                >
+                  <Phone size={16} />
+                  Call Now
                 </a>
               </div>
             </div>

@@ -651,6 +651,28 @@ const Apartments = () => {
                   </div>
                 </div>
                 <div className="property-description">{property.description}</div>
+
+                {/* Contact Buttons */}
+                <div className="contact-buttons">
+                  <a
+                    href={`https://wa.me/255123456789?text=Hi, I'm interested in ${property.title}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="btn btn-outline"
+                    onClick={(e) => e.stopPropagation()} // Prevent card click when clicking WhatsApp button
+                  >
+                    <MessageSquare size={16} />
+                    WhatsApp
+                  </a>
+                  <a
+                    href={`tel:+255123456789`}
+                    className="btn btn-primary"
+                    onClick={(e) => e.stopPropagation()} // Prevent card click when clicking call button
+                  >
+                    <Phone size={16} />
+                    Call Now
+                  </a>
+                </div>
               </div>
             </div>
           ))}

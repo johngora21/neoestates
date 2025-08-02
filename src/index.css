@@ -33,6 +33,18 @@
   --border-medium: #cbd5e1;
   --border-green: #bbf7d0;
   
+  /* Action Colors */
+  --green-500: #16a34a;
+  --green-600: #15803d;
+  --green-700: #166534;
+  --green-50: #f0fdf4;
+  --destructive: #dc2626;
+  --destructive-dark: #b91c1c;
+  
+  /* Gray Colors for UI */
+  --gray-50: #f9fafb;
+  --gray-300: #d1d5db;
+  
   /* Shadow System */
   --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
   --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
@@ -58,6 +70,29 @@ input[type="checkbox"] {
 input[type="checkbox"]:checked {
   background-color: var(--primary);
   border-color: var(--primary);
+}
+
+/* Action Buttons */
+.action-btn-approve {
+  background-color: var(--green-500) !important;
+  transition: all 0.2s ease;
+}
+
+.action-btn-approve:hover {
+  background-color: var(--green-600) !important;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(22, 163, 74, 0.3);
+}
+
+.action-btn-reject {
+  background-color: var(--destructive) !important;
+  transition: all 0.2s ease;
+}
+
+.action-btn-reject:hover {
+  background-color: var(--destructive-dark) !important;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
 }
 
 html {
@@ -459,8 +494,16 @@ body {
 
 .contact-buttons {
   display: flex;
-  gap: 0.5rem;
+  justify-content: flex-end;
+  margin-top: 1rem;
   transition: all 0.3s ease;
+}
+
+.contact-buttons .btn {
+  width: auto;
+  min-width: 120px;
+  padding: 0.75rem 1rem;
+  flex: none;
 }
 
 .btn {
@@ -499,8 +542,9 @@ body {
 }
 
 .btn-outline:hover {
-  background: var(--primary);
-  color: white;
+  background: #f3f4f6;
+  color: #374151;
+  border-color: #d1d5db;
   transform: translateY(-2px);
 }
 
@@ -617,5 +661,16 @@ html {
   }
   to {
     transform: translateX(-100%);
+  }
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateY(20px) scale(0.95);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0) scale(1);
+    opacity: 1;
   }
 }
