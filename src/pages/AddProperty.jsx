@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import { ArrowLeft, MapPin, Upload, X, Building2, Car, Square, Bed, Bath, Navigation, Map as MapIcon } from 'lucide-react';
+import { ArrowLeft, MapPin, Upload, X, Building2, Car, Square, Bed, Bath, Navigation } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import Map from '../components/Map';
+import MapComponent from '../components/Map'; // Fixed import conflict
 
 const AddProperty = () => {
   const navigate = useNavigate();
@@ -192,7 +192,7 @@ const AddProperty = () => {
             </p>
           </div>
           
-          <Map 
+          <MapComponent 
             drawMode={true}
             height="400px"
             onAreaCalculated={(areaData) => {
@@ -349,6 +349,7 @@ const AddProperty = () => {
           >
             <option value="For Sale">For Sale</option>
             <option value="For Rent">For Rent</option>
+            <option value="BNB">BNB (per night)</option>
           </select>
         </div>
 
@@ -582,6 +583,7 @@ const AddProperty = () => {
           >
             <option value="For Sale">For Sale</option>
             <option value="For Rent">For Rent</option>
+            <option value="BNB">BNB (per night)</option>
           </select>
         </div>
 
@@ -750,6 +752,7 @@ const AddProperty = () => {
           >
             <option value="For Sale">For Sale</option>
             <option value="For Rent">For Rent</option>
+            <option value="BNB">BNB (per night)</option>
           </select>
         </div>
 

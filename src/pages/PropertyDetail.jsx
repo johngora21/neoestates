@@ -359,7 +359,7 @@ const PropertyDetail = ({ addToFavorites, favorites }) => {
             <span style={{ fontSize: '0.75rem' }}>{property.location}</span>
         </div>
                     <div style={{ fontSize: '1.25rem', fontWeight: '600', color: 'var(--primary)' }}>
-            {property.price}
+          {property.price}
             {property.listingType === 'For Rent' && property.pricePeriod && (
               <span style={{ fontSize: '0.875rem', color: 'var(--text-secondary)', marginLeft: '0.5rem' }}>
                 {property.pricePeriod}
@@ -412,7 +412,7 @@ const PropertyDetail = ({ addToFavorites, favorites }) => {
                 <div style={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center', padding: '0.5rem 0', borderBottom: '1px solid var(--border-light)', gap: '1rem' }}>
                   <span style={{ fontSize: '0.875rem', fontWeight: '600', color: 'var(--text-secondary)' }}>No of bathrooms:</span>
                   <span style={{ fontSize: '0.875rem', fontWeight: '600', color: 'var(--text-primary)' }}>{property.bathrooms}</span>
-                </div>
+        </div>
 
                 {/* Row 4 */}
                 <div style={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center', padding: '0.5rem 0', borderBottom: '1px solid var(--border-light)', gap: '1rem' }}>
@@ -431,7 +431,7 @@ const PropertyDetail = ({ addToFavorites, favorites }) => {
               <div style={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center', padding: '0.5rem 0', borderBottom: '1px solid var(--border-light)', gap: '1rem' }}>
                 <span style={{ fontSize: '0.875rem', fontWeight: '600', color: 'var(--text-secondary)' }}>Parking spaces:</span>
                 <span style={{ fontSize: '0.875rem', fontWeight: '600', color: 'var(--text-primary)' }}>{property.parkingSpaces}</span>
-              </div>
+          </div>
             )}
 
             {/* Plot-specific details */}
@@ -439,7 +439,7 @@ const PropertyDetail = ({ addToFavorites, favorites }) => {
               <div style={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center', padding: '0.5rem 0', borderBottom: '1px solid var(--border-light)', gap: '1rem' }}>
                 <span style={{ fontSize: '0.875rem', fontWeight: '600', color: 'var(--text-secondary)' }}>Road access:</span>
                 <span style={{ fontSize: '0.875rem', fontWeight: '600', color: 'var(--text-primary)' }}>{property.roadAccess ? 'Yes' : 'No'}</span>
-              </div>
+          </div>
             )}
           </div>
         </div>
@@ -570,7 +570,7 @@ const PropertyDetail = ({ addToFavorites, favorites }) => {
               </div>
             ))}
           </div>
-            </div>
+        </div>
             )}
           </div>
         )}

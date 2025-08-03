@@ -25,8 +25,8 @@ const Houses = () => {
   const navigate = useNavigate();
 
   const toggleSave = (propertyId) => {
-    setSavedProperties(prev =>
-      prev.includes(propertyId)
+    setSavedProperties(prev => 
+      prev.includes(propertyId) 
         ? prev.filter(id => id !== propertyId)
         : [...prev, propertyId]
     );
@@ -83,6 +83,22 @@ const Houses = () => {
       image: 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=400&h=400&fit=crop',
       company: 'Neo Estates',
       description: 'Spacious townhouse perfect for large families with garden and parking.'
+    },
+    {
+      id: 4,
+      title: 'Beachfront BNB Villa',
+      price: 'TZS 180,000',
+      pricePeriod: 'per night',
+      location: 'Coco Beach, Dar es Salaam',
+      type: 'house',
+      listingType: 'BNB',
+      beds: 3,
+      baths: 2,
+      area: '200 sqm',
+      furnishedStatus: 'Fully Furnished',
+      image: 'https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=400&h=400&fit=crop',
+      company: 'Neo Estates',
+      description: 'Beautiful beachfront villa perfect for vacation rentals. Swimming pool, garden, and direct beach access.'
     }
   ];
 
@@ -185,7 +201,7 @@ const Houses = () => {
             <Menu size={18} />
           </button>
           <div className="logo">
-            <span>Houses</span>
+            <span>Residential</span>
           </div>
           <div className="header-actions">
             <button className="action-btn">
@@ -341,6 +357,7 @@ const Houses = () => {
                     <option value="">All</option>
                     <option value="For Sale">For Sale</option>
                     <option value="For Rent">For Rent</option>
+                    <option value="BNB">BNB (per night)</option>
                   </select>
                 </div>
               </div>
@@ -538,7 +555,7 @@ const Houses = () => {
 
             {/* Clear Filters Button */}
             <div style={{ marginTop: '2rem', textAlign: 'center' }}>
-              <button
+              <button 
                 onClick={() => {
                   setSelectedType('');
                   setSelectedRegion('');
@@ -591,27 +608,27 @@ const Houses = () => {
                     toggleSave(property.id);
                   }}
                   className={`action-btn-small ${savedProperties.includes(property.id) ? 'liked' : ''}`}
-                >
-                  <Bookmark size={18} />
-                </button>
-              </div>
+              >
+                <Bookmark size={18} />
+              </button>
+            </div>
 
               {/* Property Image */}
-              <div className="property-image-container">
-                <img
+            <div className="property-image-container">
+              <img
                   src={property.image}
                   alt={property.title}
-                  className="property-image"
-                />
+                className="property-image"
+              />
                 <div className="property-badge">House</div>
-              </div>
+            </div>
 
               {/* Property Info */}
-              <div className="card-content">
+            <div className="card-content">
                 <div className="property-title">{property.title}</div>
                                       <div className="property-price">
                         {property.price}
-                        {property.listingType === 'For Rent' && property.pricePeriod && (
+                        {(property.listingType === 'For Rent' || property.listingType === 'BNB') && property.pricePeriod && (
                           <span style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', marginLeft: '0.25rem' }}>
                             {property.pricePeriod}
                           </span>
@@ -635,38 +652,38 @@ const Houses = () => {
                 }}>
                   {property.listingType}
                 </div>
-                <div className="property-location">
-                  <MapPin size={16} />
+              <div className="property-location">
+                <MapPin size={16} />
                   <span>{property.location}</span>
-                </div>
-                <div className="property-features">
-                  <div className="feature-item">
-                    <Bed size={16} />
+              </div>
+              <div className="property-features">
+                <div className="feature-item">
+                  <Bed size={16} />
                     <span>{property.beds} beds</span>
-                  </div>
-                  <div className="feature-item">
-                    <Bath size={16} />
+                </div>
+                <div className="feature-item">
+                  <Bath size={16} />
                     <span>{property.baths} baths</span>
-                  </div>
-                  <div className="feature-item">
-                    <Square size={16} />
+                </div>
+                <div className="feature-item">
+                  <Square size={16} />
                     <span>{property.area}</span>
                   </div>
                 </div>
                 <div className="property-description">{property.description}</div>
 
-                {/* Contact Buttons */}
-                <div className="contact-buttons">
-                  <a
+              {/* Contact Buttons */}
+              <div className="contact-buttons">
+                <a
                     href={`https://wa.me/255123456789?text=Hi, I'm interested in ${property.title}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="btn btn-outline"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn btn-outline"
                     onClick={(e) => e.stopPropagation()} // Prevent card click when clicking WhatsApp button
-                  >
-                    <MessageSquare size={16} />
-                    WhatsApp
-                  </a>
+                >
+                  <MessageSquare size={16} />
+                  WhatsApp
+                </a>
                   <a
                     href={`tel:+255123456789`}
                     className="btn btn-primary"
@@ -679,7 +696,7 @@ const Houses = () => {
               </div>
             </div>
           ))}
-        </div>
+          </div>
 
         {filteredProperties.length === 0 && (
           <div style={{ textAlign: 'center', padding: '3rem 1rem' }}>
@@ -700,9 +717,10 @@ const Houses = () => {
       />
 
       {/* Sidebar */}
-              <Sidebar isOpen={showSidebar} onClose={() => setShowSidebar(false)} userRole={user.role} />
+              <Sidebar isOpen={showSidebar} onClose={() => setShowSidebar(false)} userRole={user?.role} />
     </div>
   );
 };
 
 export default Houses; 
+

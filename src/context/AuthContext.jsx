@@ -1,4 +1,5 @@
-import { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
+import { authAPI } from '../services/api';
 
 const AuthContext = createContext();
 
@@ -11,39 +12,99 @@ export const useAuth = () => {
 };
 
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState({
-    id: 1,
-    name: 'Admin User',
-    email: 'admin@neoestates.com',
-    role: 'admin', // Change this to 'user' to test regular user view
-    isAuthenticated: true
-  });
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  const login = (userData) => {
-    setUser({ ...userData, isAuthenticated: true });
+  // Check if user is logged in on app start
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      checkAuthStatus();
+    } else {
+      setLoading(false);
+    }
+  }, []);
+
+  const checkAuthStatus = async () => {
+    try {
+      const response = await authAPI.getMe();
+      setUser(response.data);
+      setError(null);
+    } catch (error) {
+      console.error('Auth check failed:', error);
+      localStorage.removeItem('token');
+      setUser(null);
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const logout = () => {
-    setUser({
-      id: null,
-      name: '',
-      email: '',
-      role: 'user',
-      isAuthenticated: false
-    });
+  const login = async (email, password) => {
+    try {
+      setLoading(true);
+      setError(null);
+      
+      const response = await authAPI.login({ email, password });
+      
+      localStorage.setItem('token', response.token);
+      setUser(response.data);
+      
+      return response;
+    } catch (error) {
+      setError(error.message);
+      throw error;
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const updateUserRole = (role) => {
-    setUser(prev => ({ ...prev, role }));
+  const register = async (userData) => {
+    try {
+      setLoading(true);
+      setError(null);
+      
+      const response = await authAPI.register(userData);
+      
+      localStorage.setItem('token', response.token);
+      setUser(response.data);
+      
+      return response;
+    } catch (error) {
+      setError(error.message);
+      throw error;
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const logout = async () => {
+    try {
+      await authAPI.logout();
+    } catch (error) {
+      console.error('Logout error:', error);
+    } finally {
+      localStorage.removeItem('token');
+      setUser(null);
+      setError(null);
+    }
+  };
+
+  const clearError = () => {
+    setError(null);
   };
 
   const value = {
     user,
+    loading,
+    error,
     login,
+    register,
     logout,
-    updateUserRole,
-    isAdmin: user.role === 'admin',
-    isAuthenticated: user.isAuthenticated
+    clearError,
+    isAuthenticated: !!user,
+    isAdmin: user?.role === 'admin',
+    isAgent: user?.role === 'agent',
   };
 
   return (

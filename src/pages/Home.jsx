@@ -1,25 +1,65 @@
-import { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { Phone, MessageSquare, Building2, Bookmark, MapPin, Bed, Bath, Square, User, Plus, Menu, Play, ChevronLeft, ChevronRight } from 'lucide-react';
-import PropertySubmissionForm from '../components/PropertySubmissionForm';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { 
+  Bookmark, 
+  ChevronLeft, 
+  ChevronRight, 
+  Play, 
+  Menu,
+  Plus,
+  Phone,
+  MessageSquare
+} from 'lucide-react';
 import Sidebar from '../components/Sidebar';
+import PropertySubmissionForm from '../components/PropertySubmissionForm';
+import { propertiesAPI } from '../services/api';
 import { useAuth } from '../context/AuthContext';
 
 const Home = () => {
+  const navigate = useNavigate();
   const { user } = useAuth();
+  const [properties, setProperties] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [currentMediaIndex, setCurrentMediaIndex] = useState({});
+  const [playingVideos, setPlayingVideos] = useState({});
   const [savedProperties, setSavedProperties] = useState([]);
   const [showPropertyForm, setShowPropertyForm] = useState(false);
   const [showSidebar, setShowSidebar] = useState(false);
-  const [currentMediaIndex, setCurrentMediaIndex] = useState({});
-  const [playingVideos, setPlayingVideos] = useState({});
-  const navigate = useNavigate();
 
-  const toggleSave = (propertyId) => {
-    setSavedProperties(prev =>
-      prev.includes(propertyId)
-        ? prev.filter(id => id !== propertyId)
-        : [...prev, propertyId]
-    );
+  // Fetch properties on component mount
+  useEffect(() => {
+    fetchProperties();
+  }, []);
+
+  const fetchProperties = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      
+      const data = await propertiesAPI.getAll();
+      setProperties(data.data || data);
+    } catch (error) {
+      setError(error.message);
+      console.error('Error fetching properties:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const toggleSave = async (propertyId) => {
+    try {
+      await propertiesAPI.toggleFavorite(propertyId);
+      
+      // Update saved properties list
+      if (savedProperties.includes(propertyId)) {
+        setSavedProperties(prev => prev.filter(id => id !== propertyId));
+      } else {
+        setSavedProperties(prev => [...prev, propertyId]);
+      }
+    } catch (error) {
+      console.error('Error toggling favorite:', error);
+    }
   };
 
   const handlePropertyClick = (propertyId) => {
@@ -27,23 +67,25 @@ const Home = () => {
   };
 
   const nextMedia = (propertyId) => {
-    const property = properties.find(p => p.id === propertyId);
-    if (!property) return;
-    
-    setCurrentMediaIndex(prev => ({
-      ...prev,
-      [propertyId]: (prev[propertyId] || 0) < property.media.length - 1 ? (prev[propertyId] || 0) + 1 : 0
-    }));
+    const property = properties.find(p => p._id === propertyId);
+    if (property && property.media.length > 1) {
+      setCurrentMediaIndex(prev => ({
+        ...prev,
+        [propertyId]: ((prev[propertyId] || 0) + 1) % property.media.length
+      }));
+    }
   };
 
   const prevMedia = (propertyId) => {
-    const property = properties.find(p => p.id === propertyId);
-    if (!property) return;
-    
-    setCurrentMediaIndex(prev => ({
-      ...prev,
-      [propertyId]: (prev[propertyId] || 0) > 0 ? (prev[propertyId] || 0) - 1 : property.media.length - 1
-    }));
+    const property = properties.find(p => p._id === propertyId);
+    if (property && property.media.length > 1) {
+      setCurrentMediaIndex(prev => ({
+        ...prev,
+        [propertyId]: prev[propertyId] === 0 
+          ? property.media.length - 1 
+          : (prev[propertyId] || 0) - 1
+      }));
+    }
   };
 
   const toggleVideoPlay = (propertyId) => {
@@ -53,103 +95,41 @@ const Home = () => {
     }));
   };
 
-  const properties = [
-    {
-      id: 1,
-      title: 'Modern Villa in Masaki',
-      price: 'TZS 450,000,000',
-      location: 'Masaki, Dar es Salaam',
-      type: 'house',
-      listingType: 'For Sale',
-      beds: 4,
-      baths: 3,
-      area: '250 sqm',
-      media: [
-        { type: 'video', url: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4', thumbnail: 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=400&h=400&fit=crop' },
-        { type: 'image', url: 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=400&h=400&fit=crop' },
-        { type: 'image', url: 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=400&h=400&fit=crop' },
-        { type: 'image', url: 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=400&h=400&fit=crop' }
-      ],
-      company: 'Neo Estates',
-      description: 'Beautiful modern villa with stunning ocean views. Perfect for families looking for luxury living.'
-    },
-    {
-      id: 2,
-      title: 'Office Building in City Centre',
-      price: 'TZS 850,000',
-      pricePeriod: 'per month',
-      leaseTerm: '1 year',
-      location: 'City Centre, Dar es Salaam',
-      type: 'commercial',
-      listingType: 'For Rent',
-      area: '500 sqm',
-      media: [
-        { type: 'video', url: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4', thumbnail: 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=400&h=400&fit=crop' },
-        { type: 'image', url: 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=400&h=400&fit=crop' },
-        { type: 'image', url: 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=400&h=400&fit=crop' }
-      ],
-      company: 'Neo Estates',
-      description: 'Modern office building with multiple floors, perfect for corporate headquarters.'
-    },
-    {
-      id: 3,
-      title: 'Residential Plot in Masaki',
-      price: 'TZS 180,000,000',
-      location: 'Masaki, Dar es Salaam',
-      type: 'plot',
-      listingType: 'For Sale',
-      area: '500 sqm',
-      media: [
-        { type: 'image', url: 'https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=400&h=400&fit=crop' },
-        { type: 'image', url: 'https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=400&h=400&fit=crop' },
-        { type: 'image', url: 'https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=400&h=400&fit=crop' },
-        { type: 'image', url: 'https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=400&h=400&fit=crop' },
-        { type: 'image', url: 'https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=400&h=400&fit=crop' }
-      ],
-      company: 'Neo Estates',
-      description: 'Prime residential plot in upscale neighborhood with excellent infrastructure and security.'
-    },
-    {
-      id: 4,
-      title: 'Luxury Apartment',
-      price: 'TZS 320,000,000',
-      location: 'City Centre, Dar es Salaam',
-      type: 'house',
-      listingType: 'For Rent',
-      beds: 3,
-      baths: 2,
-      area: '180 sqm',
-      media: [
-        { type: 'video', url: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4', thumbnail: 'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=400&h=400&fit=crop' },
-        { type: 'image', url: 'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=400&h=400&fit=crop' },
-        { type: 'image', url: 'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=400&h=400&fit=crop' }
-      ],
-      company: 'Neo Estates',
-      description: 'Spacious apartment in the heart of the city with modern amenities and security.'
-    }
-  ];
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-500 mx-auto"></div>
+          <p className="mt-4 text-gray-600">Loading properties...</p>
+        </div>
+      </div>
+    );
+  }
 
-  const stories = [
-    { id: 1, title: 'Villa', image: 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=100&h=100&fit=crop' },
-    { id: 2, title: 'Apartment', image: 'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=100&h=100&fit=crop' },
-    { id: 3, title: 'Office', image: 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=100&h=100&fit=crop' },
-    { id: 4, title: 'Retail Space', image: 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=100&h=100&fit=crop' },
-    { id: 5, title: 'Warehouse', image: 'https://images.unsplash.com/photo-1582407947304-fd86f17f3f9c?w=100&h=100&fit=crop' },
-    { id: 6, title: 'Co-space', image: 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=100&h=100&fit=crop' },
-    { id: 7, title: 'Plots', image: 'https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=100&h=100&fit=crop' },
-    { id: 8, title: 'Farms', image: 'https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=100&h=100&fit=crop' },
-    { id: 9, title: 'Pet House', image: 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=100&h=100&fit=crop' }
-  ];
+  if (error) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <p className="text-red-600 mb-4">Error: {error}</p>
+          <button 
+            onClick={fetchProperties}
+            className="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600"
+          >
+            Retry
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <div className="App">
+    <div className="min-h-screen bg-gray-50">
       {/* Header */}
       <header className="app-header">
         <div className="header-content">
-          <button 
-            className="action-btn" 
+          <button
+            className="action-btn"
             onClick={() => setShowSidebar(true)}
-            style={{ marginRight: '1rem' }}
           >
             <Menu size={18} />
           </button>
@@ -165,50 +145,54 @@ const Home = () => {
       </header>
 
       {/* Stories Section */}
-      <section className="stories-section">
+      <div className="stories-section">
         <div className="stories-container">
-          {stories.map((story) => (
-            <div key={story.id} className="story-item">
+          {['Villa', 'Apartment', 'Townhouse', 'Duplex', 'Office', 'Shop', 'Warehouse', 'Restaurant', 'Hotel', 'Residential Plot', 'Commercial Plot', 'Agricultural', 'Mixed Use'].map((subType, index) => (
+            <div key={index} className="story-item">
               <div className="story-avatar">
-                <img src={story.image} alt={story.title} />
+                <div className="story-avatar-inner">
+                  <span>{subType.charAt(0)}</span>
+                </div>
               </div>
-              <div className="story-title">{story.title}</div>
+              <div className="story-title">{subType}</div>
             </div>
           ))}
         </div>
-      </section>
+      </div>
 
-      {/* Properties Feed */}
+      {/* Properties Grid */}
       <div className="properties-container">
         {properties.map((property) => {
-          const currentIndex = currentMediaIndex[property.id] || 0;
+          const currentIndex = currentMediaIndex[property._id] || 0;
           const currentMedia = property.media[currentIndex];
           const isVideo = currentMedia?.type === 'video';
-          
+
           return (
-            <div 
-              key={property.id} 
+            <div
+              key={property._id}
               className="property-card"
-              onClick={() => handlePropertyClick(property.id)}
-              style={{ cursor: 'pointer', marginBottom: '2rem' }}
+              onClick={() => handlePropertyClick(property._id)}
             >
-            {/* Property Header */}
+              {/* Card Header */}
             <div className="card-header">
               <div className="agent-info">
                 <div className="agent-avatar">
-                    <Building2 size={16} style={{ color: 'white' }} />
+                    <img
+                      src={property.owner?.avatar?.url || 'https://via.placeholder.com/40'}
+                      alt={property.owner?.name || 'Agent'}
+                    />
                 </div>
                 <div className="agent-details">
-                    <h4>{property.company}</h4>
+                    <h4>{property.owner?.name || 'Neo Estates'}</h4>
                   <p>{property.location}</p>
                 </div>
               </div>
               <button 
                   onClick={(e) => {
                     e.stopPropagation();
-                    toggleSave(property.id);
+                    toggleSave(property._id);
                   }}
-                className={`action-btn-small ${savedProperties.includes(property.id) ? 'liked' : ''}`}
+                  className={`action-btn-small ${savedProperties.includes(property._id) ? 'liked' : ''}`}
               >
                 <Bookmark size={18} />
               </button>
@@ -220,28 +204,28 @@ const Home = () => {
                   <video
                     src={currentMedia.url}
                     poster={currentMedia.thumbnail}
-                    controls={playingVideos[property.id]}
-                    autoPlay={playingVideos[property.id]}
+                    controls={playingVideos[property._id]}
+                    autoPlay={playingVideos[property._id]}
                     className="property-image"
                     onClick={(e) => {
                       e.stopPropagation();
-                      toggleVideoPlay(property.id);
+                      toggleVideoPlay(property._id);
                     }}
                   />
                 ) : (
                   <img
-                    src={currentMedia.url}
+                    src={currentMedia?.url || 'https://via.placeholder.com/400x300'}
                 alt={property.title}
                 className="property-image"
               />
                 )}
 
                 {/* Video Play Button */}
-                {isVideo && !playingVideos[property.id] && (
+                {isVideo && !playingVideos[property._id] && (
                   <button
                     onClick={(e) => {
                       e.stopPropagation();
-                      toggleVideoPlay(property.id);
+                      toggleVideoPlay(property._id);
                     }}
                     className="action-btn-small"
                     style={{
@@ -271,7 +255,7 @@ const Home = () => {
                     <button
                       onClick={(e) => {
                         e.stopPropagation();
-                        prevMedia(property.id);
+                        prevMedia(property._id);
                       }}
                       className="action-btn-small"
                       style={{
@@ -297,7 +281,7 @@ const Home = () => {
                     <button
                       onClick={(e) => {
                         e.stopPropagation();
-                        nextMedia(property.id);
+                        nextMedia(property._id);
                       }}
                       className="action-btn-small"
                       style={{
@@ -354,7 +338,7 @@ const Home = () => {
                   {property.title}
                 </div>
                 <div className="property-price">
-                  {property.price}
+                  {property.price?.toLocaleString()} TZS
                   {property.listingType === 'For Rent' && property.pricePeriod && (
                     <span style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', marginLeft: '0.25rem' }}>
                       {property.pricePeriod}
@@ -381,32 +365,37 @@ const Home = () => {
                 </div>
 
               <div className="property-location">
-                  <MapPin size={14} />
                   <span>{property.location}</span>
               </div>
 
               <div className="property-features">
-                {property.type === 'house' && (
-                  <>
+                  {property.propertyType === 'residence' && (
+                    <>
+                      {property.bedrooms && (
+                        <div className="feature-item">
+                          <span>🛏️</span>
+                          {property.bedrooms}
+                        </div>
+                      )}
+                      {property.bathrooms && (
                     <div className="feature-item">
-                        <Bed size={14} />
-                      {property.beds}
+                          <span>🚿</span>
+                          {property.bathrooms}
                     </div>
+                      )}
+                    </>
+                  )}
+                  {property.size && (
                     <div className="feature-item">
-                        <Bath size={14} />
-                      {property.baths}
+                      <span>📐</span>
+                      {property.size}
                     </div>
-                  </>
                 )}
-                <div className="feature-item">
-                    <Square size={14} />
-                  {property.area}
                 </div>
-              </div>
 
                 <div className="property-description">
                   {property.description}
-                </div>
+              </div>
 
               {/* Contact Buttons */}
               <div className="contact-buttons">
@@ -415,37 +404,37 @@ const Home = () => {
                   target="_blank"
                   rel="noopener noreferrer"
                   className="btn btn-outline"
-                  onClick={(e) => e.stopPropagation()} // Prevent card click when clicking WhatsApp button
+                    onClick={(e) => e.stopPropagation()} // Prevent card click when clicking WhatsApp button
                 >
                   <MessageSquare size={16} />
                   WhatsApp
                 </a>
-                <a
-                  href={`tel:+255123456789`}
-                  className="btn btn-primary"
-                  onClick={(e) => e.stopPropagation()} // Prevent card click when clicking call button
-                >
-                  <Phone size={16} />
-                  Call Now
-                </a>
+                  <a
+                    href={`tel:+255123456789`}
+                    className="btn btn-primary"
+                    onClick={(e) => e.stopPropagation()} // Prevent card click when clicking call button
+                  >
+                    <Phone size={16} />
+                    Call Now
+                  </a>
+                </div>
               </div>
             </div>
-          </div>
           );
         })}
       </div>
 
       {/* Property Submission Form */}
-            <PropertySubmissionForm 
+      <PropertySubmissionForm 
         isOpen={showPropertyForm} 
         onClose={() => setShowPropertyForm(false)} 
         propertyType="house"
       />
       
-            <Sidebar
+      <Sidebar
         isOpen={showSidebar}
         onClose={() => setShowSidebar(false)}
-        userRole={user.role}
+        userRole={user?.role}
       />
     </div>
   );

@@ -235,6 +235,80 @@ const getPropertiesByType = asyncHandler(async (req, res, next) => {
   });
 });
 
+// @desc    Get filtered properties
+// @route   GET /api/properties/filter
+// @access  Public
+const getFilteredProperties = asyncHandler(async (req, res, next) => {
+  const {
+    propertyType,
+    listingType,
+    minPrice,
+    maxPrice,
+    bedrooms,
+    bathrooms,
+    furnishedStatus,
+    location,
+    page = 1,
+    limit = 10
+  } = req.query;
+
+  // Build filter object
+  const filter = { status: 'approved' };
+
+  if (propertyType) {
+    filter.propertyType = propertyType;
+  }
+
+  if (listingType) {
+    filter.listingType = listingType;
+  }
+
+  if (minPrice || maxPrice) {
+    filter.price = {};
+    if (minPrice) filter.price.$gte = parseInt(minPrice);
+    if (maxPrice) filter.price.$lte = parseInt(maxPrice);
+  }
+
+  if (bedrooms) {
+    filter.bedrooms = { $gte: parseInt(bedrooms) };
+  }
+
+  if (bathrooms) {
+    filter.bathrooms = { $gte: parseInt(bathrooms) };
+  }
+
+  if (furnishedStatus) {
+    filter.furnishedStatus = furnishedStatus;
+  }
+
+  if (location) {
+    filter.location = { $regex: location, $options: 'i' };
+  }
+
+  // Pagination
+  const skip = (parseInt(page) - 1) * parseInt(limit);
+  const total = await Property.countDocuments(filter);
+
+  const properties = await Property.find(filter)
+    .populate('owner', 'name email')
+    .sort('-createdAt')
+    .skip(skip)
+    .limit(parseInt(limit));
+
+  res.status(200).json({
+    success: true,
+    count: properties.length,
+    total,
+    pagination: {
+      current: parseInt(page),
+      pages: Math.ceil(total / parseInt(limit)),
+      hasNext: skip + properties.length < total,
+      hasPrev: parseInt(page) > 1
+    },
+    data: properties
+  });
+});
+
 module.exports = {
   getProperties,
   getProperty,
@@ -244,5 +318,6 @@ module.exports = {
   getMyProperties,
   toggleFavorite,
   getFavorites,
-  getPropertiesByType
+  getPropertiesByType,
+  getFilteredProperties
 }; 

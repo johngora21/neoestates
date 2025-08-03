@@ -127,6 +127,10 @@ const propertySchema = new mongoose.Schema({
     enum: ['pending', 'approved', 'rejected', 'sold', 'rented'],
     default: 'pending'
   },
+  rejectionReason: {
+    type: String,
+    default: ''
+  },
   views: {
     type: Number,
     default: 0
