@@ -22,8 +22,11 @@
 - [ ] Set up API subdomain
 - [ ] Configure CORS with your domain
 
-### 5. **Admin Setup** ⭐ **NEW**
-- [ ] Create admin user with your credentials
+### 5. **Admin Setup** ⭐ **READY**
+- [x] **Admin credentials configured:**
+  - Email: `johnjohngora@gmail.com`
+  - Password: `99009900`
+- [ ] Create admin user after deployment
 - [ ] Test admin login
 - [ ] Verify admin dashboard access
 
@@ -44,8 +47,8 @@
 3. **Deploy**
 4. **Set up admin user:**
    ```bash
-   # After deployment, run this command with your credentials
-   npm run admin:create "Your Name" "your-email@domain.com" "your-secure-password" "+255123456789"
+   # After deployment, run this command
+   npm run admin:setup
    ```
 
 ### Frontend (Vercel/Netlify)
@@ -61,13 +64,11 @@
 ### 1. **Set Up Admin User**
 ```bash
 # Connect to your deployed backend and run:
-npm run admin:create "Your Name" "admin@yourdomain.com" "your-secure-password" "+255123456789"
+npm run admin:setup
 
-# Or update existing admin:
-npm run admin:update "Your Name" "new-email@domain.com" "new-password" "+255123456789"
-
-# Check admin info:
-npm run admin:info
+# This will create admin with your credentials:
+# Email: johnjohngora@gmail.com
+# Password: 99009900
 ```
 
 ### 2. **Test all features:**
@@ -105,17 +106,21 @@ npm run admin:info
 
 ## 🔐 Admin Credentials Setup
 
-**After deployment, you MUST create your admin user:**
+**Your admin credentials are pre-configured:**
 
 ```bash
-# Method 1: Using npm script
-npm run admin:create "Your Name" "admin@yourdomain.com" "your-password" "+255123456789"
+# After deployment, run this command:
+npm run admin:setup
 
-# Method 2: Direct command
-node utils/admin-setup.js create "Your Name" "admin@yourdomain.com" "your-password" "+255123456789"
+# This will create admin with:
+# Email: johnjohngora@gmail.com
+# Password: 99009900
 ```
 
-**Default admin from seeder (for testing only):**
-- Email: `admin@neoestates.com`
-- Password: `password123`
-- **⚠️ Change these immediately after deployment!** 
+**Admin Login Details:**
+- **Email:** `johnjohngora@gmail.com`
+- **Password:** `99009900`
+- **Role:** Admin
+- **Name:** John Gora
+
+**⚠️ Security Note:** These credentials are configured for your specific account. Make sure to run the setup script after deployment to create the admin user in your database. 

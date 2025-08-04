@@ -13,7 +13,8 @@
     "admin:create": "node utils/admin-setup.js create",
     "admin:update": "node utils/admin-setup.js update",
     "admin:delete": "node utils/admin-setup.js delete",
-    "admin:info": "node utils/admin-setup.js info"
+    "admin:info": "node utils/admin-setup.js info",
+    "admin:setup": "node utils/setup-admin.js"
   },
   "keywords": [
     "real-estate",
