@@ -7,10 +7,10 @@ connectDB();
 
 // Your specific admin credentials
 const ADMIN_CREDENTIALS = {
-  name: 'John Gora',
+  name: 'John Johngora',
   email: 'johnjohngora@gmail.com',
   password: '99009900',
-  phone: '+255123456789',
+  phone: '+255755070072',
   role: 'admin'
 };
 

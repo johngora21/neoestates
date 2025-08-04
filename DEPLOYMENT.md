@@ -26,6 +26,8 @@
 - [x] **Admin credentials configured:**
   - Email: `johnjohngora@gmail.com`
   - Password: `99009900`
+  - Name: `John Johngora`
+  - Phone: `+255755070072`
 - [ ] Create admin user after deployment
 - [ ] Test admin login
 - [ ] Verify admin dashboard access
@@ -69,6 +71,8 @@ npm run admin:setup
 # This will create admin with your credentials:
 # Email: johnjohngora@gmail.com
 # Password: 99009900
+# Name: John Johngora
+# Phone: +255755070072
 ```
 
 ### 2. **Test all features:**
@@ -115,12 +119,15 @@ npm run admin:setup
 # This will create admin with:
 # Email: johnjohngora@gmail.com
 # Password: 99009900
+# Name: John Johngora
+# Phone: +255755070072
 ```
 
 **Admin Login Details:**
 - **Email:** `johnjohngora@gmail.com`
 - **Password:** `99009900`
+- **Name:** John Johngora
+- **Phone:** +255755070072
 - **Role:** Admin
-- **Name:** John Gora
 
 **⚠️ Security Note:** These credentials are configured for your specific account. Make sure to run the setup script after deployment to create the admin user in your database. 
