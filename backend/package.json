@@ -9,7 +9,11 @@
     "prod": "NODE_ENV=production node server.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "data:import": "node utils/seeder.js",
-    "data:destroy": "node utils/seeder.js -d"
+    "data:destroy": "node utils/seeder.js -d",
+    "admin:create": "node utils/admin-setup.js create",
+    "admin:update": "node utils/admin-setup.js update",
+    "admin:delete": "node utils/admin-setup.js delete",
+    "admin:info": "node utils/admin-setup.js info"
   },
   "keywords": [
     "real-estate",
