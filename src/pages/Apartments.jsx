@@ -182,7 +182,7 @@ const Apartments = () => {
           >
             <Menu size={18} />
           </button>
-          <div className="logo">
+          <div className="header-title">
             <span>Apartments</span>
           </div>
           <div className="header-actions">

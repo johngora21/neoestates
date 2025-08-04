@@ -196,11 +196,10 @@ const Houses = () => {
           <button 
             className="action-btn" 
             onClick={() => setShowSidebar(true)}
-            style={{ marginRight: '1rem' }}
           >
             <Menu size={18} />
           </button>
-          <div className="logo">
+          <div className="header-title">
             <span>Residential</span>
           </div>
           <div className="header-actions">

@@ -133,7 +133,7 @@ const Home = () => {
           >
             <Menu size={18} />
           </button>
-          <div className="logo">
+          <div className="header-title">
             <span>Neo Estates</span>
           </div>
           <div className="header-actions">
