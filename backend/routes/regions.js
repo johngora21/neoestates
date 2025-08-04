@@ -10,6 +10,6 @@ const router = express.Router();
 // Public routes - order matters!
 router.get('/search', searchRegions); // Must come before /:region
 router.get('/', getRegions);
-router.get('/:region/districts', getDistrictsByRegion);
+router.get('/districts/:region', getDistrictsByRegion);
 
 module.exports = router; 

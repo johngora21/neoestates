@@ -72,6 +72,26 @@ input[type="checkbox"]:checked {
   border-color: var(--primary);
 }
 
+/* Placeholder Styling */
+::placeholder {
+  color: var(--text-tertiary) !important;
+  opacity: 1;
+  font-family: inherit;
+  font-size: 0.875rem;
+}
+
+:-ms-input-placeholder {
+  color: var(--text-tertiary) !important;
+  font-family: inherit;
+  font-size: 0.875rem;
+}
+
+::-ms-input-placeholder {
+  color: var(--text-tertiary) !important;
+  font-family: inherit;
+  font-size: 0.875rem;
+}
+
 /* Action Buttons */
 .action-btn-approve {
   background-color: var(--green-500) !important;

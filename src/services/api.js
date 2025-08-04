@@ -99,14 +99,34 @@ export const adminAPI = {
     method: 'PUT',
   }),
   
-  rejectProperty: (id, rejectionReason) => apiRequest(`/admin/properties/${id}/reject`, {
+  rejectProperty: (id) => apiRequest(`/admin/properties/${id}/reject`, {
     method: 'PUT',
-    body: JSON.stringify({ rejectionReason }),
   }),
   
   getUsersByRole: (role) => apiRequest(`/admin/users/${role}`),
   
   getPropertyStats: () => apiRequest('/admin/property-stats'),
+};
+
+// Agent Requests API
+export const agentRequestsAPI = {
+  submit: (requestData) => apiRequest('/agent-requests', {
+    method: 'POST',
+    body: JSON.stringify(requestData),
+  }),
+  
+  getAll: () => apiRequest('/agent-requests'),
+  
+  getById: (id) => apiRequest(`/agent-requests/${id}`),
+  
+  update: (id, updateData) => apiRequest(`/agent-requests/${id}`, {
+    method: 'PUT',
+    body: JSON.stringify(updateData),
+  }),
+  
+  delete: (id) => apiRequest(`/agent-requests/${id}`, {
+    method: 'DELETE',
+  }),
 };
 
 // Users API

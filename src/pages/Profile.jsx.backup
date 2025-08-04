@@ -1,16 +1,13 @@
 import { useState } from 'react';
 import { User, Settings, LogOut, Edit, Camera, Shield, Bell, Globe, ArrowLeft } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import Sidebar from '../components/Sidebar';
-import { useAuth } from '../context/AuthContext';
+
 const Profile = () => {
   const navigate = useNavigate();
-  const { user } = useAuth();
-  const [showSidebar, setShowSidebar] = useState(false);
-  const [userData] = useState({
-    name: 'John Johngora',
-    email: 'johnjohngora@gmail.com',
-    phone: '+255755070072',
+  const [user] = useState({
+    name: 'Admin User',
+    email: 'admin@neoestates.co.tz',
+    phone: '+255 123 456 789',
     role: 'Administrator',
     avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop'
   });

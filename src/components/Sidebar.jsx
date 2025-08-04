@@ -1,4 +1,4 @@
-import { User, Plus, Home, Building2, MapPin, X, Settings, LogOut, Shield, Users, CheckCircle, Clock, BarChart3 } from 'lucide-react';
+import { User, Plus, Home, Building2, MapPin, X, Settings, LogOut, Shield, Users, CheckCircle, Clock, BarChart3, UserPlus } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const Sidebar = ({ isOpen, onClose, userRole = 'user' }) => {
@@ -122,6 +122,27 @@ const Sidebar = ({ isOpen, onClose, userRole = 'user' }) => {
             </Link>
           </div>
 
+          {/* Agent Request Section - Only show for regular users */}
+          {userRole === 'user' && (
+            <div style={{ padding: '0 1.5rem', marginBottom: '1rem' }}>
+              <Link to="/become-agent" style={{ textDecoration: 'none' }}>
+                <div style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.75rem',
+                  padding: '0.75rem',
+                  borderRadius: 'var(--radius-sm)',
+                  color: 'var(--text-primary)',
+                  transition: 'background 0.2s',
+                  cursor: 'pointer',
+                }}>
+                  <UserPlus size={18} />
+                  <span>Become an Agent</span>
+                </div>
+              </Link>
+            </div>
+          )}
+
           {/* Admin Section */}
           {userRole === 'admin' && (
             <>
@@ -179,6 +200,25 @@ const Sidebar = ({ isOpen, onClose, userRole = 'user' }) => {
                   }}>
                     <Users size={18} />
                     <span>Manage Users</span>
+                  </div>
+                </Link>
+              </div>
+
+              {/* Agent Requests */}
+              <div style={{ padding: '0 1.5rem', marginBottom: '1rem' }}>
+                <Link to="/admin/agent-requests" style={{ textDecoration: 'none' }}>
+                  <div style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '0.75rem',
+                    padding: '0.75rem',
+                    borderRadius: 'var(--radius-sm)',
+                    color: 'var(--text-primary)',
+                    transition: 'background 0.2s',
+                    cursor: 'pointer'
+                  }}>
+                    <UserPlus size={18} />
+                    <span>Agent Requests</span>
                   </div>
                 </Link>
               </div>

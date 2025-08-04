@@ -32,6 +32,7 @@ app.use('/api/users', require('./routes/users'));
 app.use('/api/upload', require('./routes/upload'));
 app.use('/api/admin', require('./routes/admin'));
 app.use('/api/regions', require('./routes/regions'));
+app.use('/api/agent-requests', require('./routes/agentRequests'));
 
 // Health check route
 app.get('/api/health', (req, res) => {

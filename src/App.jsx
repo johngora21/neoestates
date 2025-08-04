@@ -17,6 +17,8 @@ import AdminDashboard from './pages/AdminDashboard';
 import AdminUsers from './pages/AdminUsers';
 import AdminPendingProperties from './pages/AdminPendingProperties';
 import AdminAddProperty from './pages/AdminAddProperty';
+import BecomeAgent from './pages/BecomeAgent';
+import AdminAgentRequests from './pages/AdminAgentRequests';
 import BottomNav from './components/BottomNav';
 
 function AppContent() {
@@ -37,7 +39,8 @@ function AppContent() {
                              !location.pathname.startsWith('/add-property') &&
                              !location.pathname.startsWith('/profile') &&
                              !location.pathname.startsWith('/my-properties') &&
-                             !location.pathname.startsWith('/admin/');
+                             !location.pathname.startsWith('/admin/') &&
+                             !location.pathname.startsWith('/become-agent');
 
   return (
     <div className="App">
@@ -51,6 +54,7 @@ function AppContent() {
           <Route path="/profile" element={<Profile />} />
           <Route path="/my-properties" element={<MyProperties />} />
           <Route path="/add-property" element={<AddProperty />} />
+          <Route path="/become-agent" element={<BecomeAgent />} />
           <Route path="/properties/:id" element={<PropertyDetail addToFavorites={addToFavorites} favorites={favorites} />} />
           <Route path="/submit/residential" element={<ResidentialSubmission />} />
           <Route path="/submit/commercial" element={<CommercialSubmission />} />
@@ -61,6 +65,7 @@ function AppContent() {
           <Route path="/admin/users" element={<AdminUsers />} />
           <Route path="/admin/pending-properties" element={<AdminPendingProperties />} />
           <Route path="/admin/add-property" element={<AdminAddProperty />} />
+          <Route path="/admin/agent-requests" element={<AdminAgentRequests />} />
         </Routes>
       </main>
       {shouldShowBottomNav && <BottomNav />}

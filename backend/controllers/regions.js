@@ -18,7 +18,7 @@ const getRegions = asyncHandler(async (req, res, next) => {
 });
 
 // @desc    Get districts by region
-// @route   GET /api/regions/:region/districts
+// @route   GET /api/regions/districts/:region
 // @access  Public
 const getDistrictsByRegion = asyncHandler(async (req, res, next) => {
   const { region } = req.params;

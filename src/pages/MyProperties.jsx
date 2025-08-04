@@ -88,7 +88,7 @@ const MyProperties = () => {
         <div className="header-content">
           <button 
             className="action-btn" 
-            onClick={() => navigate(-1)}
+            onClick={() => navigate('/')}
             style={{ marginRight: '1rem' }}
           >
             <ArrowLeft size={18} />
