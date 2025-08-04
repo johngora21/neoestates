@@ -1,4 +1,7 @@
-const API_BASE_URL = 'http://localhost:5000/api';
+// API base URL - will use production URL when deployed
+const API_BASE_URL = process.env.NODE_ENV === 'production' 
+  ? 'https://your-backend-domain.com/api'  // Replace with your backend domain
+  : 'http://localhost:5000/api';
 
 // Helper function to handle API requests
 const apiRequest = async (endpoint, options = {}) => {
