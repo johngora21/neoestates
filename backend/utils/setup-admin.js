@@ -9,7 +9,7 @@ connectDB();
 const ADMIN_CREDENTIALS = {
   name: 'John Johngora',
   email: 'johnjohngora@gmail.com',
-  password: '99009900',
+  password: '8xiYJmuZ04opLKCx',
   phone: '+255755070072',
   role: 'admin'
 };
